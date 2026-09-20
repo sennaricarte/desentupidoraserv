@@ -1,0 +1,132 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BairroCard from '../../components/BairroCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import FaqAccordion from '../../components/FaqAccordion.astro';
+import Hero from '../../components/Hero.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import { toOgImagePath } from '../../lib/resolve-asset-image';
+import negocio from '../../data/negocio.json';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const servicos = await getCollection('servicos');
+
+  return servicos.map((entry) => ({
+    params: { servico: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'servicos'>;
+}
+
+const { entry } = Astro.props;
+const { nome, descricao, slug, titulo_seo, meta_descricao, imagem } = entry.data;
+
+const bairros = (await getCollection('bairros')).sort((a, b) =>
+  a.data.nome.localeCompare(b.data.nome, 'pt-BR'),
+);
+
+const siteUrl = `https://${negocio.dominio}`;
+const pageUrl = `${siteUrl}/servicos/${slug}/`;
+const whatsappMensagem = `Olá! Preciso de um orçamento para ${nome.toLowerCase()} em ${negocio.endereco.cidade}.`;
+
+const faqs = [
+  {
+    pergunta: `Quanto custa o ${nome.toLowerCase()}?`,
+    resposta:
+      'O valor depende do tipo de obstrução e do acesso à tubulação. Envie fotos e o bairro pelo WhatsApp que montamos o orçamento antes de ir até o local.',
+  },
+  {
+    pergunta: 'É preciso agendar com antecedência?',
+    resposta: `Para emergências, não. O atendimento é ${negocio.horario_funcionamento}. Em serviços programados, combinamos o melhor horário pelo WhatsApp.`,
+  },
+];
+
+const breadcrumbList = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: `${siteUrl}/`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Serviços',
+      item: `${siteUrl}/#servicos`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: nome,
+      item: pageUrl,
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title={titulo_seo}
+  description={meta_descricao}
+  jsonLd={breadcrumbList}
+  whatsappMensagem={whatsappMensagem}
+  ogImage={toOgImagePath(slug, imagem)}
+>
+  <main id="conteudo-principal">
+    <div class="page-wrap pt-lg text-center">
+      <nav aria-label="breadcrumb">
+        <ol class="m-0 flex list-none flex-wrap items-center justify-center gap-sm p-0 text-sm text-text-muted">
+          <li>
+            <a href="/" class="text-primary no-underline hover:underline">Home</a>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li>
+            <a href="/#servicos" class="text-primary no-underline hover:underline">Serviços</a>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page" class="text-text">{nome}</li>
+        </ol>
+      </nav>
+    </div>
+
+    <Hero
+      titulo={`${nome} em ${negocio.endereco.cidade}`}
+      descricao={descricao}
+      imagem={imagem}
+      alt={`${nome} em ${negocio.endereco.cidade}`}
+      mensagem={whatsappMensagem}
+      secondaryHref="/#bairros"
+      secondaryLabel="Ver bairros"
+    />
+
+    <section class="bg-bg-alt" aria-labelledby="bairros-servico-titulo">
+      <div class="page-wrap py-3xl">
+        <SectionHeading
+          id="bairros-servico-titulo"
+          eyebrow="Onde atendemos"
+          title={`Atendemos em todos os bairros de ${negocio.endereco.cidade}`}
+        />
+        <div class="mt-xl grid gap-md sm:grid-cols-2 lg:grid-cols-3">
+          {bairros.map((bairro) => <BairroCard bairro={bairro} />)}
+        </div>
+      </div>
+    </section>
+
+    <CtaBand mensagem={whatsappMensagem} />
+
+    <section class="bg-bg-alt" aria-labelledby="faq-servico-titulo">
+      <div class="mx-auto max-w-[48rem] px-md py-3xl">
+        <SectionHeading id="faq-servico-titulo" eyebrow="Dúvidas" title="Perguntas frequentes" />
+        <div class="mt-xl">
+          <FaqAccordion itens={faqs} />
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

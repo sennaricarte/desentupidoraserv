@@ -1,0 +1,25 @@
+---
+import WhatsAppButton from './WhatsAppButton.astro';
+
+interface Props {
+  titulo?: string;
+  descricao?: string;
+  mensagem?: string;
+}
+
+const {
+  titulo = 'Entupiu? A equipe sai agora',
+  descricao = 'Chame no WhatsApp, informe o bairro e o tipo de entupimento. Orçamento rápido, atendimento 24 horas em Aracaju.',
+  mensagem,
+} = Astro.props;
+---
+
+<section class="bg-primary-dark text-white" aria-labelledby="cta-titulo">
+  <div class="mx-auto flex max-w-[48rem] flex-col items-center px-md py-3xl text-center">
+    <div>
+      <h2 id="cta-titulo" class="m-0 text-3xl font-bold text-white md:text-4xl">{titulo}</h2>
+      <p class="mt-md mb-xl text-lg text-white/80">{descricao}</p>
+    </div>
+    <WhatsAppButton variant="cta" mensagem={mensagem} />
+  </div>
+</section>

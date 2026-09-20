@@ -1,0 +1,65 @@
+---
+interface FaqItem {
+  pergunta: string;
+  resposta: string;
+}
+
+interface Props {
+  itens: FaqItem[];
+}
+
+const { itens } = Astro.props;
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: itens.map((item) => ({
+    '@type': 'Question',
+    name: item.pergunta,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.resposta,
+    },
+  })),
+};
+---
+
+<div class="flex flex-col gap-sm">
+  {
+    itens.map((item) => (
+      <details class="faq-item rounded-2xl bg-bg px-lg py-md shadow-sm">
+        <summary class="flex cursor-pointer items-center justify-between gap-md font-heading font-semibold text-text">
+          <span>{item.pergunta}</span>
+          <span class="faq-marker inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary" aria-hidden="true"></span>
+        </summary>
+        <p class="mt-sm mb-0 pr-xl text-text-muted">{item.resposta}</p>
+      </details>
+    ))
+  }
+</div>
+
+{
+  itens.length > 0 && (
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  )
+}
+
+<style>
+  .faq-item summary {
+    list-style: none;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-marker::before {
+    content: '+';
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .faq-item[open] .faq-marker::before {
+    content: '−';
+  }
+</style>

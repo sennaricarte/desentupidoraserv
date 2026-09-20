@@ -1,0 +1,28 @@
+{
+  "name": "desentopearacaju",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=18.20.8"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "buscar-imagens": "node scripts/buscar-imagens-pexels.mjs",
+    "baixar-imagem": "node scripts/baixar-imagem-escolhida.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource/manrope": "^5.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^5.18.2",
+    "sharp": "^0.35.4",
+    "tailwindcss": "^4.3.3"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "sharp": true
+  }
+}

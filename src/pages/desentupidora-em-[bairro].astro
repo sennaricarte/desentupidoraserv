@@ -1,0 +1,142 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BairroCard from '../components/BairroCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Hero from '../components/Hero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import { toOgImagePath } from '../lib/resolve-asset-image';
+import negocio from '../data/negocio.json';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const bairros = await getCollection('bairros');
+
+  return bairros.map((entry) => ({
+    params: { bairro: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'bairros'>;
+}
+
+const { entry } = Astro.props;
+const { nome, descricao, slug, titulo_seo, meta_descricao, imagem } = entry.data;
+
+const servicos = (await getCollection('servicos')).sort((a, b) => a.data.ordem - b.data.ordem);
+const outrosBairros = (await getCollection('bairros'))
+  .filter((bairro) => bairro.data.slug !== slug)
+  .sort((a, b) => a.data.nome.localeCompare(b.data.nome, 'pt-BR'));
+
+const siteUrl = `https://${negocio.dominio}`;
+const pageUrl = `${siteUrl}/desentupidora-em-${slug}/`;
+const whatsappMensagem = `Olá! Preciso de um orçamento para desentupimento em ${nome}.`;
+
+const localBusiness = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: negocio.nome,
+  telephone: `+${negocio.whatsapp_numero}`,
+  url: siteUrl,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: negocio.endereco.cidade,
+    addressRegion: negocio.endereco.estado,
+    addressCountry: 'BR',
+  },
+  openingHours: negocio.horario_funcionamento,
+  areaServed: nome,
+};
+
+const breadcrumbList = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: `${siteUrl}/`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Bairros',
+      item: `${siteUrl}/#bairros`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: nome,
+      item: pageUrl,
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title={titulo_seo}
+  description={meta_descricao}
+  jsonLd={[localBusiness, breadcrumbList]}
+  whatsappMensagem={whatsappMensagem}
+  ogImage={toOgImagePath(slug, imagem)}
+>
+  <main id="conteudo-principal">
+    <div class="page-wrap pt-lg text-center">
+      <nav aria-label="breadcrumb">
+        <ol class="m-0 flex list-none flex-wrap items-center justify-center gap-sm p-0 text-sm text-text-muted">
+          <li>
+            <a href="/" class="text-primary no-underline hover:underline">Home</a>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li>
+            <a href="/#bairros" class="text-primary no-underline hover:underline">Bairros</a>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page" class="text-text">{nome}</li>
+        </ol>
+      </nav>
+    </div>
+
+    <Hero
+      titulo={`Desentupidora em ${nome}, ${negocio.endereco.cidade}`}
+      descricao={descricao}
+      imagem={imagem}
+      alt={`Desentupidora no bairro ${nome}, em ${negocio.endereco.cidade}`}
+      mensagem={whatsappMensagem}
+      secondaryHref="/#servicos"
+      secondaryLabel="Ver serviços"
+    />
+
+    <section class="bg-bg-alt" aria-labelledby="servicos-bairro-titulo">
+      <div class="page-wrap py-3xl">
+        <SectionHeading
+          id="servicos-bairro-titulo"
+          eyebrow="Serviços no bairro"
+          title="Serviços que atendemos neste bairro"
+        />
+        <div class="mt-xl grid gap-md md:grid-cols-2 lg:grid-cols-3">
+          {servicos.map((servico) => <ServiceCard servico={servico} />)}
+        </div>
+      </div>
+    </section>
+
+    <CtaBand mensagem={whatsappMensagem} />
+
+    <section class="bg-bg" aria-labelledby="outros-bairros-titulo">
+      <div class="page-wrap py-3xl">
+        <SectionHeading id="outros-bairros-titulo" eyebrow="Mais cobertura" title="Outros bairros atendidos" />
+        <p class="mt-lg mb-lg text-center">
+          <a href="/" class="font-heading font-semibold text-primary no-underline hover:text-primary-dark">
+            Voltar para a home
+          </a>
+        </p>
+        <div class="grid gap-md sm:grid-cols-2 lg:grid-cols-3">
+          {outrosBairros.map((bairro) => <BairroCard bairro={bairro} />)}
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

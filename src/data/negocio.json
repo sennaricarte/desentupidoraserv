@@ -1,0 +1,13 @@
+{
+  "nome": "Desentupidora Aracaju",
+  "telefone_exibicao": "(79) 0000-0000",
+  "whatsapp_numero": "5579000000000",
+  "whatsapp_mensagem_padrao": "Olá! Preciso de um orçamento para desentupimento.",
+  "endereco": {
+    "cidade": "Aracaju",
+    "estado": "SE",
+    "regiao": "BR-SE"
+  },
+  "horario_funcionamento": "24 horas, todos os dias",
+  "dominio": "desentupidoraserv.com.br"
+}

@@ -1,0 +1,95 @@
+---
+import negocio from '../data/negocio.json';
+import WhatsAppButton from './WhatsAppButton.astro';
+
+const navItems = [
+  { href: '/#servicos', label: 'Serviços' },
+  { href: '/#bairros', label: 'Bairros' },
+  { href: '/#como-funciona', label: 'Como funciona' },
+  { href: '/#faq', label: 'FAQ' },
+];
+---
+
+<header class="site-header sticky top-0 z-50 border-b border-primary/5 bg-bg">
+  <div class="page-wrap relative">
+    <input id="nav-toggle" class="peer sr-only" type="checkbox" />
+
+    <div
+      class="flex h-20 items-center justify-between gap-md peer-checked:[&_.icon-open]:hidden peer-checked:[&_.icon-close]:block"
+    >
+      <a href="/" class="inline-flex min-w-0 items-center gap-sm font-heading text-lg font-bold text-primary no-underline">
+        <span
+          class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-white"
+          aria-hidden="true"
+        >
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2.2s-6.2 7.4-6.2 11.3a6.2 6.2 0 1 0 12.4 0C18.2 9.6 12 2.2 12 2.2Z"></path>
+          </svg>
+        </span>
+        <span class="truncate">{negocio.nome}</span>
+      </a>
+
+      <div class="flex shrink-0 items-center gap-sm sm:gap-md">
+        <a
+          href={`tel:+${negocio.whatsapp_numero}`}
+          class="hidden font-heading text-sm font-semibold text-text no-underline hover:text-primary xl:inline-flex"
+        >
+          {negocio.telefone_exibicao}
+        </a>
+        <span class="hidden sm:inline-flex">
+          <WhatsAppButton variant="cta" size="sm" />
+        </span>
+
+        <label
+          for="nav-toggle"
+          class="inline-flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-md border border-primary/15 text-primary lg:hidden"
+        >
+          <span class="sr-only">Abrir menu de navegação</span>
+          <svg class="icon-open" aria-hidden="true" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"></path>
+          </svg>
+          <svg class="icon-close hidden" aria-hidden="true" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"></path>
+          </svg>
+        </label>
+      </div>
+    </div>
+
+    <nav
+      aria-label="Navegação principal"
+      class="hidden flex-col border-t border-bg-alt py-md peer-checked:flex lg:absolute lg:top-1/2 lg:left-1/2 lg:flex lg:-translate-x-1/2 lg:-translate-y-1/2 lg:border-0 lg:py-0"
+    >
+      <ul class="m-0 flex list-none flex-col gap-sm p-0 lg:flex-row lg:items-center lg:gap-lg">
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="block py-sm font-heading text-sm font-semibold text-text no-underline hover:text-primary lg:py-0"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li class="pt-sm lg:hidden">
+          <WhatsAppButton variant="cta" size="sm" />
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    animation: header-elevate linear both;
+    animation-timeline: scroll();
+    animation-range: 0 80px;
+  }
+
+  @keyframes header-elevate {
+    to {
+      box-shadow: 0 1px 0 rgb(11 95 165 / 0.06), 0 8px 24px rgb(26 26 26 / 0.08);
+    }
+  }
+</style>

@@ -1,0 +1,25 @@
+---
+interface Step {
+  numero: string;
+  titulo: string;
+  descricao: string;
+}
+
+interface Props {
+  passos: Step[];
+}
+
+const { passos } = Astro.props;
+---
+
+<ol class="m-0 grid list-none gap-md p-0 md:grid-cols-3">
+  {
+    passos.map((passo) => (
+      <li class="rounded-2xl bg-bg p-lg text-center shadow-sm">
+        <span class="font-heading text-4xl font-bold text-primary/20">{passo.numero}</span>
+        <h3 class="mt-sm mb-sm text-xl font-bold">{passo.titulo}</h3>
+        <p class="m-0 text-text-muted">{passo.descricao}</p>
+      </li>
+    ))
+  }
+</ol>

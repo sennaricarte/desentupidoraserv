@@ -1,0 +1,141 @@
+---
+import { getCollection } from 'astro:content';
+import BairroCard from '../components/BairroCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import Hero from '../components/Hero.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import TrustStrip from '../components/TrustStrip.astro';
+import hero from '../data/hero.json';
+import negocio from '../data/negocio.json';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const servicos = (await getCollection('servicos')).sort((a, b) => a.data.ordem - b.data.ordem);
+const bairros = (await getCollection('bairros')).sort((a, b) =>
+  a.data.nome.localeCompare(b.data.nome, 'pt-BR'),
+);
+
+const title = 'Desentupidora em Aracaju 24h | Desentope';
+const description =
+  'Desentupidora em Aracaju 24 horas. Atendemos pia, vaso, ralo e esgoto em Jardins, Atalaia, Farolândia e demais bairros, com orçamento no WhatsApp.';
+
+const faqs = [
+  {
+    pergunta: 'Atendem em quanto tempo?',
+    resposta:
+      'Em emergências, a equipe se desloca o mais rápido possível em Aracaju. O prazo exato depende do bairro e do trânsito no momento do chamado.',
+  },
+  {
+    pergunta: 'Fazem orçamento por WhatsApp?',
+    resposta:
+      'Sim. Envie o tipo de entupimento e o bairro pelo WhatsApp que retornamos com orientação e valor estimado antes de ir até o local.',
+  },
+  {
+    pergunta: 'Atendem finais de semana e feriados?',
+    resposta: `Sim. O atendimento é ${negocio.horario_funcionamento}, incluindo sábados, domingos e feriados.`,
+  },
+  {
+    pergunta: 'Quais bairros vocês atendem?',
+    resposta:
+      'Atendemos Aracaju e região, com páginas específicas para os bairros listados nesta página. Se o seu bairro não aparecer, chame no WhatsApp para confirmar a cobertura.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: negocio.nome,
+  telephone: `+${negocio.whatsapp_numero}`,
+  url: `https://${negocio.dominio}`,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: negocio.endereco.cidade,
+    addressRegion: negocio.endereco.estado,
+    addressCountry: 'BR',
+  },
+  openingHours: negocio.horario_funcionamento,
+};
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd} ogImage={hero.ogImage}>
+  <main id="conteudo-principal">
+    <Hero
+      imagem={hero.imagem}
+      alt={hero.alt}
+      destaque="24 Horas"
+      secondaryHref="#servicos"
+      secondaryLabel="Ver serviços"
+    />
+
+    <TrustStrip
+      itens={[
+        { valor: '24h', label: 'Atendimento todos os dias' },
+        { valor: String(bairros.length), label: 'Bairros com página própria' },
+        { valor: String(servicos.length), label: 'Serviços de desentupimento' },
+        { valor: 'WhatsApp', label: 'Orçamento sem compromisso' },
+      ]}
+    />
+
+    <section id="servicos" class="scroll-mt-24 bg-bg-alt" aria-labelledby="servicos-titulo">
+      <div class="page-wrap py-3xl">
+        <SectionHeading id="servicos-titulo" eyebrow="O que fazemos" title="Nossos Serviços" />
+        <div class="mt-xl grid gap-md md:grid-cols-2 lg:grid-cols-3">
+          {servicos.map((servico) => <ServiceCard servico={servico} />)}
+        </div>
+      </div>
+    </section>
+
+    <section id="como-funciona" class="scroll-mt-24 bg-bg" aria-labelledby="processo-titulo">
+      <div class="page-wrap py-3xl">
+        <SectionHeading
+          id="processo-titulo"
+          eyebrow="Atendimento simples"
+          title="Como funciona o chamado"
+        />
+        <div class="mt-xl">
+          <ProcessSteps
+            passos={[
+              {
+                numero: '01',
+                titulo: 'Chame no WhatsApp',
+                descricao: 'Informe o bairro e o que está entupido. Se puder, envie uma foto do local.',
+              },
+              {
+                numero: '02',
+                titulo: 'Receba o orçamento',
+                descricao: 'Retornamos com orientação e valor estimado antes de deslocar a equipe.',
+              },
+              {
+                numero: '03',
+                titulo: 'Equipe no local',
+                descricao: `Saímos o mais rápido possível. Atendimento ${negocio.horario_funcionamento.toLowerCase()}.`,
+              },
+            ]}
+          />
+        </div>
+      </div>
+    </section>
+
+    <section id="bairros" class="scroll-mt-24 bg-bg-alt" aria-labelledby="bairros-titulo">
+      <div class="page-wrap py-3xl">
+        <SectionHeading id="bairros-titulo" eyebrow="Cobertura local" title="Bairros Atendidos" />
+        <div class="mt-xl grid gap-md sm:grid-cols-2 lg:grid-cols-3">
+          {bairros.map((bairro) => <BairroCard bairro={bairro} />)}
+        </div>
+      </div>
+    </section>
+
+    <CtaBand />
+
+    <section id="faq" class="scroll-mt-24 bg-bg-alt" aria-labelledby="faq-titulo">
+      <div class="mx-auto max-w-[48rem] px-md py-3xl">
+        <SectionHeading id="faq-titulo" eyebrow="Dúvidas" title="Perguntas frequentes" />
+        <div class="mt-xl">
+          <FaqAccordion itens={faqs} />
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

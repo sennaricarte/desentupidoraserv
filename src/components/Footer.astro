@@ -1,0 +1,78 @@
+---
+import { getCollection } from 'astro:content';
+import negocio from '../data/negocio.json';
+
+const ano = new Date().getFullYear();
+const bairros = (await getCollection('bairros')).sort((a, b) =>
+  a.data.nome.localeCompare(b.data.nome, 'pt-BR'),
+);
+const servicos = (await getCollection('servicos')).sort((a, b) => a.data.ordem - b.data.ordem);
+const whatsappHref = `https://wa.me/${negocio.whatsapp_numero}?text=${encodeURIComponent(negocio.whatsapp_mensagem_padrao)}`;
+---
+
+<footer class="bg-primary-dark text-white">
+  <div class="page-wrap grid gap-xl py-3xl md:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <p class="m-0 inline-flex items-center gap-sm font-heading text-lg font-bold">
+        <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/10" aria-hidden="true">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2.2s-6.2 7.4-6.2 11.3a6.2 6.2 0 1 0 12.4 0C18.2 9.6 12 2.2 12 2.2Z"></path>
+          </svg>
+        </span>
+        {negocio.nome}
+      </p>
+      <p class="mt-md mb-0 text-sm text-white/75">
+        Desentupidora em {negocio.endereco.cidade}/{negocio.endereco.estado}, com atendimento
+        {` ${negocio.horario_funcionamento.toLowerCase()}`}.
+      </p>
+    </div>
+    <div>
+      <p class="m-0 font-heading font-semibold">Serviços</p>
+      <ul class="mt-md mb-0 flex list-none flex-col gap-sm p-0">
+        {
+          servicos.map((servico) => (
+            <li>
+              <a href={`/servicos/${servico.data.slug}/`} class="text-sm text-white/75 no-underline hover:text-white">
+                {servico.data.nome}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <div>
+      <p class="m-0 font-heading font-semibold">Bairros atendidos</p>
+      <ul class="mt-md mb-0 flex list-none flex-col gap-sm p-0">
+        {
+          bairros.map((bairro) => (
+            <li>
+              <a
+                href={`/desentupidora-em-${bairro.data.slug}/`}
+                class="text-sm text-white/75 no-underline hover:text-white"
+              >
+                {bairro.data.nome}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <div>
+      <p class="m-0 font-heading font-semibold">Contato</p>
+      <ul class="mt-md mb-0 flex list-none flex-col gap-sm p-0 text-sm text-white/75">
+        <li>
+          <a href={whatsappHref} class="text-white/75 no-underline hover:text-white" target="_blank" rel="noopener noreferrer">
+            {negocio.telefone_exibicao}
+          </a>
+        </li>
+        <li>{negocio.horario_funcionamento}</li>
+        <li>
+          {negocio.endereco.cidade}/{negocio.endereco.estado}
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-white/10 px-md py-md text-center text-sm text-white/60">
+    © {ano} {negocio.nome}. Todos os direitos reservados.
+  </div>
+</footer>

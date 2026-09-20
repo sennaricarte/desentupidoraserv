@@ -1,0 +1,17 @@
+# Desentope Aracaju
+
+Site da desentupidora em Aracaju/SE, com páginas de serviços hidráulicos e bairros atendidos.
+
+## Páginas
+
+- Desentupidora em Aracaju: https://desentupidoraserv.com.br/
+- Desentupidora em Atalaia, Aracaju: https://desentupidoraserv.com.br/desentupidora-em-atalaia/
+- Desentupidora na Farolândia, Aracaju: https://desentupidoraserv.com.br/desentupidora-em-farolandia/
+- Desentupidora no Jardins, Aracaju: https://desentupidoraserv.com.br/desentupidora-em-jardins/
+- Desentupidora em São José, Aracaju: https://desentupidoraserv.com.br/desentupidora-em-sao-jose/
+- Desentupidora no 13 de Julho, Aracaju: https://desentupidoraserv.com.br/desentupidora-em-treze-de-julho/
+- Desentupimento de Esgoto em Aracaju: https://desentupidoraserv.com.br/servicos/esgoto/
+- Hidrojateamento em Aracaju: https://desentupidoraserv.com.br/servicos/hidrojateamento/
+- Desentupimento de Pia em Aracaju: https://desentupidoraserv.com.br/servicos/pia/
+- Desentupimento de Ralo em Aracaju: https://desentupidoraserv.com.br/servicos/ralo/
+- Desentupimento de Vaso Sanitário em Aracaju: https://desentupidoraserv.com.br/servicos/vaso/

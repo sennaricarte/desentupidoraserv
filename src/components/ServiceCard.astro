@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ServiceIcon from './ServiceIcon.astro';
+
+interface Props {
+  servico: CollectionEntry<'servicos'>;
+}
+
+const { servico } = Astro.props;
+const { nome, descricao, slug, icone } = servico.data;
+---
+
+<article class="rounded-2xl bg-bg p-lg shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg">
+  <ServiceIcon name={icone} />
+  <h3 class="mt-md mb-sm text-xl font-bold">
+    <a href={`/servicos/${slug}/`} class="text-text no-underline hover:text-primary">
+      {nome}
+    </a>
+  </h3>
+  <p class="mt-0 mb-md text-text-muted">{descricao}</p>
+  <a href={`/servicos/${slug}/`} class="font-heading text-sm font-semibold text-primary no-underline hover:text-primary-dark">
+    Ver serviço
+  </a>
+</article>
