@@ -83,14 +83,15 @@ const tituloDepois = destaqueIndex >= 0 ? titulo.slice(destaqueIndex + destaque!
             <Image
               src={heroImage}
               alt={alt}
-              width={1600}
-              height={900}
+              width={1024}
+              height={576}
+              widths={[480, 720, 1024]}
+              sizes="(min-width: 1024px) 1024px, 100vw"
               format="webp"
               quality="mid"
               loading="eager"
               fetchpriority="high"
               class="aspect-video h-full w-full object-cover object-[center_75%]"
-              sizes="(min-width: 1024px) 1024px, 100vw"
             />
           ) : (
             <div class="relative aspect-video min-h-64" aria-hidden="true">
