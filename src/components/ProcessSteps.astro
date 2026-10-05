@@ -16,7 +16,7 @@ const { passos } = Astro.props;
   {
     passos.map((passo) => (
       <li class="rounded-2xl bg-bg p-lg text-center shadow-sm">
-        <span class="font-heading text-4xl font-bold text-primary/20">{passo.numero}</span>
+        <span class="font-heading text-4xl font-bold text-primary">{passo.numero}</span>
         <h3 class="mt-sm mb-sm text-xl font-bold">{passo.titulo}</h3>
         <p class="m-0 text-text-muted">{passo.descricao}</p>
       </li>

@@ -21,7 +21,7 @@ const whatsappHref = `https://wa.me/${negocio.whatsapp_numero}?text=${encodeURIC
         </span>
         {negocio.nome}
       </p>
-      <p class="mt-md mb-0 text-sm text-white/75">
+      <p class="mt-md mb-0 text-sm text-white/80">
         Desentupidora em {negocio.endereco.cidade}/{negocio.endereco.estado}, com atendimento
         {` ${negocio.horario_funcionamento.toLowerCase()}`}.
       </p>
@@ -32,7 +32,7 @@ const whatsappHref = `https://wa.me/${negocio.whatsapp_numero}?text=${encodeURIC
         {
           servicos.map((servico) => (
             <li>
-              <a href={`/servicos/${servico.data.slug}/`} class="text-sm text-white/75 no-underline hover:text-white">
+              <a href={`/servicos/${servico.data.slug}/`} class="text-sm text-white/80 no-underline hover:text-white">
                 {servico.data.nome}
               </a>
             </li>
@@ -48,7 +48,7 @@ const whatsappHref = `https://wa.me/${negocio.whatsapp_numero}?text=${encodeURIC
             <li>
               <a
                 href={`/desentupidora-em-${bairro.data.slug}/`}
-                class="text-sm text-white/75 no-underline hover:text-white"
+                class="text-sm text-white/80 no-underline hover:text-white"
               >
                 {bairro.data.nome}
               </a>
@@ -59,9 +59,9 @@ const whatsappHref = `https://wa.me/${negocio.whatsapp_numero}?text=${encodeURIC
     </div>
     <div>
       <p class="m-0 font-heading font-semibold">Contato</p>
-      <ul class="mt-md mb-0 flex list-none flex-col gap-sm p-0 text-sm text-white/75">
+      <ul class="mt-md mb-0 flex list-none flex-col gap-sm p-0 text-sm text-white/80">
         <li>
-          <a href={whatsappHref} class="text-white/75 no-underline hover:text-white" target="_blank" rel="noopener noreferrer">
+          <a href={whatsappHref} class="text-white/80 no-underline hover:text-white" target="_blank" rel="noopener noreferrer">
             {negocio.telefone_exibicao}
           </a>
         </li>
@@ -72,7 +72,7 @@ const whatsappHref = `https://wa.me/${negocio.whatsapp_numero}?text=${encodeURIC
       </ul>
     </div>
   </div>
-  <div class="border-t border-white/10 px-md py-md text-center text-sm text-white/60">
+  <div class="border-t border-white/10 px-md py-md text-center text-sm text-white/80">
     © {ano} {negocio.nome}. Todos os direitos reservados.
   </div>
 </footer>
