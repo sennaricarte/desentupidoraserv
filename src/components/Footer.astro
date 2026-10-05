@@ -1,11 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import negocio from '../data/negocio.json';
+import { getBairrosPublicados } from '../lib/bairros';
 
 const ano = new Date().getFullYear();
-const bairros = (await getCollection('bairros')).sort((a, b) =>
-  a.data.nome.localeCompare(b.data.nome, 'pt-BR'),
-);
+const bairros = await getBairrosPublicados();
 const servicos = (await getCollection('servicos')).sort((a, b) => a.data.ordem - b.data.ordem);
 const whatsappHref = `https://wa.me/${negocio.whatsapp_numero}?text=${encodeURIComponent(negocio.whatsapp_mensagem_padrao)}`;
 ---

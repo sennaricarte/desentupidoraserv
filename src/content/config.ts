@@ -11,9 +11,28 @@ const bairros = defineCollection({
     nome: z.string(),
     slug: z.string(),
     descricao: z.string(),
-    titulo_seo: z.string(),
-    meta_descricao: z.string().max(160),
+    titulo_seo: z.string().max(60),
+    meta_descricao: z.string().min(120).max(160),
     imagem: z.string().optional(),
+    vias: z.array(z.string()).min(1),
+    referencias: z
+      .array(
+        z.object({
+          nome: z.string(),
+          tipo: z.string(),
+          endereco: z.string().optional(),
+        }),
+      )
+      .min(1),
+    faq: z
+      .array(
+        z.object({
+          pergunta: z.string(),
+          resposta: z.string(),
+        }),
+      )
+      .optional(),
+    publicar: z.boolean().default(true),
   }),
 });
 

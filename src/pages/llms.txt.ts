@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import negocio from '../data/negocio.json';
+import { getBairrosPublicados } from '../lib/bairros';
 
 export const GET: APIRoute = async ({ site }) => {
   if (!site) {
@@ -12,9 +13,7 @@ export const GET: APIRoute = async ({ site }) => {
   const url = (path: string) => new URL(path, site).href;
 
   const servicos = (await getCollection('servicos')).sort((a, b) => a.data.ordem - b.data.ordem);
-  const bairros = (await getCollection('bairros')).sort((a, b) =>
-    a.data.nome.localeCompare(b.data.nome, 'pt-BR'),
-  );
+  const bairros = await getBairrosPublicados();
 
   const linhas = [
     `# ${nome}`,

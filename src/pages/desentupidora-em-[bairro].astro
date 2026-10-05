@@ -1,16 +1,19 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BairroCard from '../components/BairroCard.astro';
 import CtaBand from '../components/CtaBand.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
 import Hero from '../components/Hero.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import ServiceCard from '../components/ServiceCard.astro';
+import { getBairrosPublicados } from '../lib/bairros';
 import { toOgImagePath } from '../lib/resolve-asset-image';
 import negocio from '../data/negocio.json';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/conteudo-longo.css';
 
 export async function getStaticPaths() {
-  const bairros = await getCollection('bairros');
+  const bairros = await getBairrosPublicados();
 
   return bairros.map((entry) => ({
     params: { bairro: entry.data.slug },
@@ -23,12 +26,11 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { nome, descricao, slug, titulo_seo, meta_descricao, imagem } = entry.data;
+const { nome, descricao, slug, titulo_seo, meta_descricao, imagem, vias, referencias, faq } = entry.data;
+const { Content } = await render(entry);
 
 const servicos = (await getCollection('servicos')).sort((a, b) => a.data.ordem - b.data.ordem);
-const outrosBairros = (await getCollection('bairros'))
-  .filter((bairro) => bairro.data.slug !== slug)
-  .sort((a, b) => a.data.nome.localeCompare(b.data.nome, 'pt-BR'));
+const outrosBairros = (await getBairrosPublicados()).filter((bairro) => bairro.data.slug !== slug);
 
 const siteUrl = `https://${negocio.dominio}`;
 const pageUrl = `${siteUrl}/desentupidora-em-${slug}/`;
@@ -111,7 +113,49 @@ const breadcrumbList = {
       secondaryLabel="Ver serviços"
     />
 
-    <section class="bg-bg-alt" aria-labelledby="servicos-bairro-titulo">
+    <section class="bg-bg" aria-label={`Desentupidora em ${nome}`}>
+      <div class="page-wrap pb-3xl">
+        <article class="conteudo-longo">
+          <Content />
+        </article>
+      </div>
+    </section>
+
+    <section class="bg-bg-alt" aria-labelledby="onde-atendemos-titulo">
+      <div class="page-wrap py-3xl">
+        <SectionHeading
+          id="onde-atendemos-titulo"
+          eyebrow="Localização"
+          title={`Onde atendemos em ${nome}`}
+        />
+        <div class="mx-auto mt-xl grid max-w-5xl gap-md md:grid-cols-2">
+          <div class="rounded-2xl bg-bg p-lg shadow-sm">
+            <h3 id="vias-titulo" class="m-0 text-xl font-bold">Vias</h3>
+            <ul class="mt-md mb-0 flex list-none flex-col gap-sm p-0" aria-labelledby="vias-titulo">
+              {vias.map((via) => <li>{via}</li>)}
+            </ul>
+          </div>
+          <div class="rounded-2xl bg-bg p-lg shadow-sm">
+            <h3 id="referencias-titulo" class="m-0 text-xl font-bold">Referências</h3>
+            <ul class="mt-md mb-0 flex list-none flex-col gap-md p-0" aria-labelledby="referencias-titulo">
+              {
+                referencias.map((referencia) => (
+                  <li>
+                    <span class="font-semibold">{referencia.nome}</span>
+                    <span class="block text-sm text-text-muted">
+                      {referencia.tipo}
+                      {referencia.endereco && ` · ${referencia.endereco}`}
+                    </span>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg" aria-labelledby="servicos-bairro-titulo">
       <div class="page-wrap py-3xl">
         <SectionHeading
           id="servicos-bairro-titulo"
@@ -125,6 +169,19 @@ const breadcrumbList = {
     </section>
 
     <CtaBand mensagem={whatsappMensagem} />
+
+    {
+      faq && faq.length > 0 && (
+        <section class="bg-bg-alt" aria-labelledby="faq-bairro-titulo">
+          <div class="mx-auto max-w-[48rem] px-md py-3xl">
+            <SectionHeading id="faq-bairro-titulo" eyebrow="Dúvidas" title={`Perguntas sobre ${nome}`} />
+            <div class="mt-xl">
+              <FaqAccordion itens={faq} />
+            </div>
+          </div>
+        </section>
+      )
+    }
 
     <section class="bg-bg" aria-labelledby="outros-bairros-titulo">
       <div class="page-wrap py-3xl">

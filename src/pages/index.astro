@@ -11,11 +11,10 @@ import TrustStrip from '../components/TrustStrip.astro';
 import hero from '../data/hero.json';
 import negocio from '../data/negocio.json';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getBairrosPublicados } from '../lib/bairros';
 
 const servicos = (await getCollection('servicos')).sort((a, b) => a.data.ordem - b.data.ordem);
-const bairros = (await getCollection('bairros')).sort((a, b) =>
-  a.data.nome.localeCompare(b.data.nome, 'pt-BR'),
-);
+const bairros = await getBairrosPublicados();
 
 const title = 'Desentupidora em Aracaju 24h | Desentope';
 const description =
