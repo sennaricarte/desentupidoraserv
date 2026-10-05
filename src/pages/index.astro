@@ -46,6 +46,7 @@ const faqs = [
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
+  '@id': `https://${negocio.dominio}/#localbusiness`,
   name: negocio.nome,
   telephone: `+${negocio.whatsapp_numero}`,
   url: `https://${negocio.dominio}`,
