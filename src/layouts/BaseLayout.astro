@@ -1,7 +1,9 @@
 ---
-import '@fontsource/manrope/400.css';
-import '@fontsource/manrope/600.css';
-import '@fontsource/manrope/700.css';
+import '@fontsource/manrope/latin-400.css';
+import '@fontsource/manrope/latin-600.css';
+import '@fontsource/manrope/latin-700.css';
+import manrope400 from '@fontsource/manrope/files/manrope-latin-400-normal.woff2?url';
+import manrope700 from '@fontsource/manrope/files/manrope-latin-700-normal.woff2?url';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
@@ -43,6 +45,8 @@ const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <link rel="preload" as="font" type="font/woff2" href={manrope700} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={manrope400} crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={resolvedCanonical} />

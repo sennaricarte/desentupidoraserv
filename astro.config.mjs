@@ -8,6 +8,9 @@ export default defineConfig({
   site: 'https://desentupidoraserv.com.br',
   output: 'static',
   integrations: [sitemap()],
+  build: {
+    inlineStylesheets: 'always',
+  },
   vite: {
     plugins: [tailwindcss()],
   },
