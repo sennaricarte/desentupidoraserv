@@ -32,6 +32,14 @@ const servicos = defineCollection({
     meta_descricao: z.string().max(160),
     ordem: z.number(),
     imagem: z.string().optional(),
+    faq: z
+      .array(
+        z.object({
+          pergunta: z.string(),
+          resposta: z.string(),
+        }),
+      )
+      .optional(),
   }),
 });
 

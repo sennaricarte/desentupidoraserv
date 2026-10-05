@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "buscar-imagens": "node scripts/buscar-imagens-pexels.mjs",
-    "baixar-imagem": "node scripts/baixar-imagem-escolhida.mjs"
+    "baixar-imagem": "node scripts/baixar-imagem-escolhida.mjs",
+    "contar-palavras": "node scripts/contar-palavras.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
